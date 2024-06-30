@@ -92,10 +92,12 @@ class RichTextController extends TextEditingController {
     for (MatchTargetItem target in targetMatches) {
       //
       if (target.regex != null) {
-        regItemText = '${regItemText.isNotEmpty ? '|$regItemText' : regItemText}${!target.allowInlineMatching ? '\\b' : ''}${target.regex!.pattern}';
+        regItemText =
+            '${regItemText.isNotEmpty ? '|$regItemText' : regItemText}${!target.allowInlineMatching ? '\\b' : ''}${target.regex!.pattern}';
       }
       if (target.text != null) {
-        stringItemText = '${stringItemText.length > 1 ? '$stringItemText|' : stringItemText}${!target.allowInlineMatching ? '\\b' : ''}${target.text}';
+        stringItemText =
+            '${stringItemText.length > 1 ? '$stringItemText|' : stringItemText}${!target.allowInlineMatching ? '\\b' : ''}${target.text}';
       }
       //
     }
@@ -112,7 +114,9 @@ class RichTextController extends TextEditingController {
       onMatch: (Match m) {
         matches.add(m[0]!);
         //
-        final MatchTargetItem? matchedItem = targetMatches.where((r) => (r.regex != null ? r.regex!.allMatches(m[0]!).isNotEmpty : r.text!.allMatches(m[0]!).isNotEmpty)).isNotEmpty
+        final MatchTargetItem? matchedItem = targetMatches
+                .where((r) => (r.regex != null ? r.regex!.allMatches(m[0]!).isNotEmpty : r.text!.allMatches(m[0]!).isNotEmpty))
+                .isNotEmpty
             ? targetMatches.firstWhere((e) {
                 return (e.regex != null ? e.regex!.allMatches(m[0]!).isNotEmpty : e.text!.allMatches(m[0]!).isNotEmpty);
               })
@@ -132,7 +136,7 @@ class RichTextController extends TextEditingController {
             children.add(
               TextSpan(
                 text: m[0],
-                style: matchedItem?.style ?? style,
+                style: matchedItem?.style != null ? style?.copyWith(fontSize: matchedItem?.style.fontSize) : style,
               ),
             );
           }
@@ -140,7 +144,7 @@ class RichTextController extends TextEditingController {
           children.add(
             TextSpan(
               text: m[0],
-              style: matchedItem?.style ?? style,
+              style: matchedItem?.style != null ? style?.copyWith(fontSize: matchedItem?.style.fontSize) : style,
             ),
           );
         }
